@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "c159",
+      "name": "Nisi eos cupiditate ",
+      "email": "wejoj@mailinator.com",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "698b",
+      "firstName": "Qui nobis eum quae i",
+      "lastName": "Nemo dolores fugit ",
+      "email": "hezeroz@mailinator.com",
+      "password": "Pa$$w0rd!"
+    },
+    {
+      "id": "1e28",
+      "firstName": "Molestiae dicta rem ",
+      "lastName": "Cumque veniam dolor",
+      "email": "qymyxyd@mailinator.com",
+      "password": "Pa$$w0rd!"
+    }
+  ],
+  "favoriteOffers": [],
+  "applications": []
+}
