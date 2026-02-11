@@ -72,5 +72,12 @@ export class JobsService {
     return filtered;
   }
 
-
+  /**
+   * Trie les jobs par date de publication (plus récent en premier)
+   */
+  sortJobsByDate(jobs: Job[]): Job[] {
+    return jobs.sort((a, b) =>
+      new Date(b.publication_date).getTime() - new Date(a.publication_date).getTime()
+    );
+  }
 }
