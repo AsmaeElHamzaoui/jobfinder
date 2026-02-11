@@ -56,5 +56,21 @@ export class JobsService {
     );
   }
 
- 
+  /**
+   * Filtre les jobs par mot-clé dans le titre
+   */
+  filterJobsByKeyword(jobs: Job[], keyword: string): Job[] {
+    if (!keyword?.trim()) {
+      return jobs;
+    }
+
+    const filtered = jobs.filter(job =>
+      job.name?.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    console.log(`✅ Jobs filtrés par keyword "${keyword}":`, filtered.length);
+    return filtered;
+  }
+
+
 }
