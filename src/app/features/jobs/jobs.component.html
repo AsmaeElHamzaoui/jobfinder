@@ -1,0 +1,241 @@
+
+<app-header></app-header>
+<div class="container py-5 ">
+
+  <!-- TITLE -->
+  <h1 class="fw-bold mb-4 text-center text-primary">
+    🔍 Trouver votre emploi idéal
+  </h1>
+
+  <!-- SEARCH BAR -->
+  <div class="search-box shadow-sm p-4 mb-5 bg-white rounded">
+    <div class="row g-3">
+      <!-- Mot-clé (obligatoire) -->
+      <div class="col-md-5">
+        <label class="form-label fw-bold small">Mots-clés (titre du poste) *</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ex: Développeur, Manager, Designer..."
+          [(ngModel)]="keyword"
+          (keyup.enter)="search()"
+          required
+        />
+      </div>
+
+      <!-- Localisation (obligatoire) -->
+      <div class="col-md-5">
+        <label class="form-label fw-bold small">Localisation (ville, pays) *</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ex: Paris, London, Remote..."
+          [(ngModel)]="location"
+          (keyup.enter)="search()"
+          required
+        />
+      </div>
+
+      <!-- Bouton recherche -->
+      <div class="col-md-2 d-grid align-self-end">
+        <button 
+          class="btn btn-warning fw-bold py-2" 
+          (click)="search()"
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading">🔍 Rechercher</span>
+          <span *ngIf="loading">
+            <span class="spinner-border spinner-border-sm me-1"></span>
+            Recherche...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICATEUR DE CHARGEMENT (Exigence métier) -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Recherche en cours...</span>
+    </div>
+    <p class="mt-3 text-muted fw-bold">🔄 Recherche d'offres en cours...</p>
+  </div>
+
+  <!-- AUCUN RÉSULTAT -->
+  <div *ngIf="!loading && displayedJobs.length === 0" class="text-center my-5">
+    <div class="alert alert-info shadow-sm">
+      <i class="bi bi-info-circle fs-3"></i>
+      <p class="mt-2 mb-0">Aucune offre d'emploi trouvée avec ces critères</p>
+      <small class="text-muted">Essayez de modifier vos filtres de recherche</small>
+    </div>
+  </div>
+
+  <!-- RÉSULTATS (10 par page max) -->
+  <div *ngIf="!loading && displayedJobs.length > 0">
+    
+    <!-- Nombre de résultats -->
+    <div class="mb-3 text-muted">
+      <strong>{{ displayedJobs.length }}</strong> offre(s) affichée(s) sur cette page
+      <span *ngIf="totalResults > 0"> ({{ totalResults }} au total)</span>
+    </div>
+
+    <!-- LISTE DES OFFRES (max 10) -->
+    <div class="card job-card mb-3 shadow-sm" *ngFor="let job of displayedJobs; let i = index">
+      <div class="card-body">
+        
+        <!-- Numéro de l'offre -->
+        <div class="job-number">Offre #{{ (page - 1) * pageSize + i + 1 }}</div>
+
+        <!-- TITRE DU POSTE (exigence 1) -->
+        <h5 class="card-title fw-bold text-primary mb-3">
+          {{ job.name }}
+        </h5>
+        
+        <!-- NOM DE L'ENTREPRISE (exigence 2) -->
+        <div class="mb-2">
+          <span class="badge bg-light text-dark border">
+            🏢 {{ job.company?.name || 'Entreprise non spécifiée' }}
+          </span>
+        </div>
+        
+        <!-- LOCALISATION (exigence 3) -->
+        <div class="mb-2">
+          <span class="text-muted">
+            <strong>📍 Localisation:</strong> 
+            {{ job.locations?.[0]?.name || 'Non spécifié' }}
+          </span>
+        </div>
+        
+        <!-- DATE DE PUBLICATION (exigence 4) -->
+        <p class="small text-muted mb-2">
+          <strong>📅 Publié le:</strong> 
+          {{ job.publication_date | date:'dd/MM/yyyy à HH:mm' }}
+        </p>
+
+        <!-- NIVEAU D'EXPÉRIENCE (optionnel) -->
+        <div class="mb-2" *ngIf="job.levels && job.levels.length > 0">
+          <span class="badge bg-info text-dark">
+            👤 {{ job.levels[0].name }}
+          </span>
+        </div>
+
+        <!-- CATÉGORIE (optionnel) -->
+        <div class="mb-3" *ngIf="job.categories && job.categories.length > 0">
+          <span class="badge bg-secondary">
+            🏷️ {{ job.categories[0].name }}
+          </span>
+        </div>
+        
+        <!-- DESCRIPTION COURTE (exigence 5) -->
+        <p class="card-text description mb-3">
+          {{ job.contents | slice:0:200 }}{{ job.contents.length > 200 ? '...' : '' }}
+        </p>
+
+        <!-- NOTE: Salaire non disponible dans cette API -->
+        
+        <!-- BOUTONS D'ACTION -->
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          
+          <!-- LIEN VERS OFFRE COMPLÈTE (exigence 6) -->
+          <a 
+            [href]="job.refs?.landing_page" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="btn btn-outline-warning btn-sm"
+          >
+            🔗 Voir l'offre complète
+          </a>
+          
+          <!-- BOUTON FAVORIS (visible uniquement si authentifié - exigence 7) -->
+          <button 
+            *ngIf="isLogged()" 
+            class="btn btn-warning btn-sm"
+            (click)="addToFavorites(job)"
+            title="Ajouter cette offre à vos favoris"
+          >
+            ⭐ Ajouter aux favoris
+          </button>
+
+          <!-- BOUTON SUIVRE CANDIDATURE (visible uniquement si authentifié - exigence 8) -->
+          <button 
+            *ngIf="isLogged()" 
+            class="btn btn-success btn-sm"
+            (click)="trackApplication(job)"
+            title="Suivre votre candidature pour cette offre"
+          >
+            📋 Suivre cette candidature
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINATION AMÉLIORÉE -->
+    <nav aria-label="Jobs pagination" *ngIf="totalPages > 1" class="mt-5">
+      <ul class="pagination justify-content-center flex-wrap">
+        
+        <!-- Bouton Précédent -->
+        <li class="page-item" [class.disabled]="page === 1">
+          <button 
+            class="page-link" 
+            (click)="prevPage()"
+            [disabled]="page === 1"
+            aria-label="Page précédente"
+          >
+            ← Précédent
+          </button>
+        </li>
+
+        <!-- Première page -->
+        <li class="page-item" *ngIf="getPageNumbers()[0] > 1">
+          <button class="page-link" (click)="goToPage(1)">1</button>
+        </li>
+        <li class="page-item disabled" *ngIf="getPageNumbers()[0] > 2">
+          <span class="page-link">...</span>
+        </li>
+
+        <!-- Numéros de pages -->
+        <li 
+          class="page-item" 
+          *ngFor="let pageNum of getPageNumbers()"
+          [class.active]="pageNum === page"
+        >
+          <button 
+            class="page-link" 
+            (click)="goToPage(pageNum)"
+            [class.fw-bold]="pageNum === page"
+          >
+            {{ pageNum }}
+          </button>
+        </li>
+
+        <!-- Dernière page -->
+        <li class="page-item disabled" *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1">
+          <span class="page-link">...</span>
+        </li>
+        <li class="page-item" *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages">
+          <button class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</button>
+        </li>
+        
+        <!-- Bouton Suivant -->
+        <li class="page-item" [class.disabled]="page === totalPages">
+          <button 
+            class="page-link" 
+            (click)="nextPage()"
+            [disabled]="page === totalPages"
+            aria-label="Page suivante"
+          >
+            Suivant →
+          </button>
+        </li>
+      </ul>
+
+      <!-- Info page actuelle -->
+      <div class="text-center mt-2 small text-muted">
+        Page <strong>{{ page }}</strong> sur <strong>{{ totalPages }}</strong>
+      </div>
+    </nav>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

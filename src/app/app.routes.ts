@@ -1,22 +1,23 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { HomeComponent } from './features/pages/home.component';
 
 export const routes: Routes = [
 
   // 🔹 Redirection par défaut
-//  {
-//     path: '',
-//     component: HomeComponent,
-//     pathMatch: 'full'
-//   },
+ {
+    path: '',
+    component: HomeComponent,
+    pathMatch: 'full'
+  },
 
-  // 🔹 Authentification (lazy loading)
+  //  Authentification (lazy loading)
   {
     path: '',
     loadChildren: () =>
       import('./features/auth/auth.routes').then(m => m.authRoutes)
   },
-  // 🔹 Recherche d'emplois (public)
+  //  Recherche d'emplois (public)
   {
     path: 'jobs',
     loadChildren: () =>
@@ -24,7 +25,7 @@ export const routes: Routes = [
         .then(m => m.jobsRoutes)
   },
 
-  // 🔹 Favoris (protégé + lazy loading)
+  //  Favoris (protégé + lazy loading)
 //   {
 //     path: 'favorites',
 //     canActivate: [AuthGuard],
@@ -33,7 +34,7 @@ export const routes: Routes = [
 //         .then(m => m.favoritesRoutes)
 //   },
 
-  // 🔹 Candidatures (protégé + lazy loading)
+  //  Candidatures (protégé + lazy loading)
 //   {
 //     path: 'applications',
 //     canActivate: [AuthGuard],
@@ -42,7 +43,7 @@ export const routes: Routes = [
 //         .then(m => m.applicationsRoutes)
 //   },
 
-  // 🔹 Profil utilisateur (protégé)
+  //  Profil utilisateur (protégé)
 //   {
 //     path: 'profile',
 //     canActivate: [AuthGuard],
@@ -51,7 +52,7 @@ export const routes: Routes = [
 //         .then(m => m.profileRoutes)
 //   },
 
-  // 🔹 Page 404
+  //  Page 404
   {
     path: '**',
     redirectTo: 'jobs'
