@@ -1,0 +1,217 @@
+<app-header></app-header>
+
+<div class="container py-5">
+
+  <!-- TITRE -->
+  <h1 class="fw-bold mb-4 text-center text-primary">
+    👤 Mon Profil
+  </h1>
+
+  <!-- CHARGEMENT -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && user" class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+      <!-- CARTE PROFIL -->
+      <div class="card profile-card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <div class="profile-avatar mx-auto mb-2">
+            {{ user.firstName.charAt(0).toUpperCase() }}{{ user.lastName.charAt(0).toUpperCase() }}
+          </div>
+          <h4 class="mb-0">{{ user.firstName }} {{ user.lastName }}</h4>
+          <small>{{ user.email }}</small>
+        </div>
+
+        <div class="card-body p-4">
+
+          <!-- MESSAGES DE SUCCÈS/ERREUR -->
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ successMessage }}
+            <button type="button" class="btn-close" (click)="clearMessages()"></button>
+          </div>
+
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="clearMessages()"></button>
+          </div>
+
+          <!-- MODE LECTURE -->
+          <div *ngIf="!editMode" class="profile-info">
+            <div class="info-row">
+              <label class="fw-bold text-muted">Prénom</label>
+              <p class="mb-0">{{ user.firstName }}</p>
+            </div>
+
+            <div class="info-row">
+              <label class="fw-bold text-muted">Nom</label>
+              <p class="mb-0">{{ user.lastName }}</p>
+            </div>
+
+            <div class="info-row">
+              <label class="fw-bold text-muted">Email</label>
+              <p class="mb-0">{{ user.email }}</p>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+              <button class="btn btn-primary" (click)="toggleEditMode()">
+                ✏️ Modifier mes informations
+              </button>
+            </div>
+          </div>
+
+          <!-- MODE ÉDITION -->
+          <div *ngIf="editMode">
+            <form (ngSubmit)="saveProfile()">
+              
+              <div class="mb-3">
+                <label class="form-label fw-bold">Prénom *</label>
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [(ngModel)]="editForm.firstName"
+                  name="firstName"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold">Nom *</label>
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [(ngModel)]="editForm.lastName"
+                  name="lastName"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold">Email *</label>
+                <input 
+                  type="email" 
+                  class="form-control"
+                  [(ngModel)]="editForm.email"
+                  name="email"
+                  required
+                />
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success" [disabled]="loading">
+                  💾 Sauvegarder
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="toggleEditMode()" [disabled]="loading">
+                  ❌ Annuler
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CHANGEMENT DE MOT DE PASSE -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-warning text-dark">
+          <h5 class="mb-0">🔐 Mot de passe</h5>
+        </div>
+        <div class="card-body p-4">
+
+          <!-- MESSAGES MOT DE PASSE -->
+          <div *ngIf="passwordSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ passwordSuccess }}
+            <button type="button" class="btn-close" (click)="clearMessages()"></button>
+          </div>
+
+          <div *ngIf="passwordError" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ passwordError }}
+            <button type="button" class="btn-close" (click)="clearMessages()"></button>
+          </div>
+
+          <div *ngIf="!changePasswordMode">
+            <p class="text-muted mb-3">Modifiez votre mot de passe pour sécuriser votre compte</p>
+            <button class="btn btn-warning w-100" (click)="togglePasswordMode()">
+              🔑 Changer mon mot de passe
+            </button>
+          </div>
+
+          <div *ngIf="changePasswordMode">
+            <form (ngSubmit)="changePassword()">
+              
+              <div class="mb-3">
+                <label class="form-label fw-bold">Mot de passe actuel *</label>
+                <input 
+                  type="password" 
+                  class="form-control"
+                  [(ngModel)]="passwordForm.currentPassword"
+                  name="currentPassword"
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold">Nouveau mot de passe *</label>
+                <input 
+                  type="password" 
+                  class="form-control"
+                  [(ngModel)]="passwordForm.newPassword"
+                  name="newPassword"
+                  required
+                  minlength="6"
+                />
+                <small class="text-muted">Au moins 6 caractères</small>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold">Confirmer le nouveau mot de passe *</label>
+                <input 
+                  type="password" 
+                  class="form-control"
+                  [(ngModel)]="passwordForm.confirmPassword"
+                  name="confirmPassword"
+                  required
+                />
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-warning" [disabled]="loading">
+                  💾 Modifier le mot de passe
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="togglePasswordMode()" [disabled]="loading">
+                  ❌ Annuler
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ZONE DANGER -->
+      <div class="card border-danger shadow-sm">
+        <div class="card-header bg-danger text-white">
+          <h5 class="mb-0">⚠️ Zone dangereuse</h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="text-muted mb-3">
+            La suppression de votre compte est définitive et entraînera la perte de toutes vos données (favoris, candidatures, etc.)
+          </p>
+          <button class="btn btn-danger w-100" (click)="deleteAccount()" [disabled]="loading">
+            🗑️ Supprimer mon compte
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>
