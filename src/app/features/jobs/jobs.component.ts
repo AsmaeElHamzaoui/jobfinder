@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { JobsService } from './services/jobs.service';
 import { Job } from './models/job.model';
+import { Application } from '../applications/models/application.model'; 
 import { HeaderComponent } from '../../shared/components/header';
 import { FooterComponent } from '../../shared/components/footer';
 import { Store } from '@ngrx/store';
@@ -124,10 +125,53 @@ export class JobsComponent implements OnInit, OnDestroy {
     console.log(`⭐ Offre "${job.name}" ajoutée aux favoris`);
   }
 
-  trackApplication(job: Job): void {
-    console.log('📋 Suivre la candidature:', job.name);
-    // TODO: Implémenter le suivi
+ trackApplication(job: Job): void {
+  const userId = this.getUserId();
+  if (!userId) {
+    console.warn('⚠️ Utilisateur non connecté');
+    return;
   }
+
+  // Vérifier si déjà en suivi
+  this.jobsService.getApplicationsService().alreadyApplied(String(userId), String(job.id))
+    .subscribe({
+      next: (existing) => {
+        if (existing && existing.length > 0) {
+          alert('Cette offre est déjà dans votre suivi de candidatures.');
+          return;
+        }
+
+        // Ajouter la candidature
+        const application: Application = {
+          userId: String(userId),
+          offerId: String(job.id),
+          apiSource: 'adzuna',
+          title: job.name,
+          company: job.company?.name ?? 'Non spécifié',
+          location: job.locations?.[0]?.name ?? 'Non spécifié',
+          url: job.refs?.landing_page ?? '',
+          status: 'en_attente',
+          notes: '',
+          dateAdded: new Date().toISOString()
+        };
+
+        this.jobsService.getApplicationsService().addApplication(application)
+          .subscribe({
+            next: () => {
+              console.log('✅ Candidature ajoutée au suivi');
+              alert('Candidature ajoutée à votre suivi !');
+            },
+            error: (err) => {
+              console.error('❌ Erreur ajout candidature:', err);
+              alert('Erreur lors de l\'ajout de la candidature');
+            }
+          });
+      },
+      error: (err) => {
+        console.error('❌ Erreur vérification:', err);
+      }
+    });
+}
 
   loadJobs(): void {
     console.log('🔍 Chargement des jobs - Page:', this.page);
