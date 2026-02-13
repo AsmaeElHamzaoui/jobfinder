@@ -4,6 +4,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, tap, of } from 'rxjs';
 import { Job, JobsApiResponse, JobSearchParams } from '../models/job.model';
+import { ApplicationsService } from '../../applications/services/applications.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class JobsService {
   private http = inject(HttpClient);
   private readonly API_URL = '/api/jobs';
   private readonly DEFAULT_PAGE_SIZE = 10;
-
+  private applicationsService = inject(ApplicationsService);
   /**
    * Récupère les offres d'emploi depuis l'API
    */
@@ -107,4 +108,9 @@ export class JobsService {
   paginateJobs(jobs: Job[], pageSize: number = this.DEFAULT_PAGE_SIZE): Job[] {
     return jobs.slice(0, pageSize);
   }
+
+  getApplicationsService(): ApplicationsService {
+  return this.applicationsService;
+}
+
 }
