@@ -37,6 +37,10 @@ import { AuthService } from '../../core/services/auth.service';
         </li>
 
         <li class="nav-item">
+          <a routerLink="/applications" class="nav-link">Candidatures</a>
+        </li>
+
+        <li class="nav-item">
           <a routerLink="/profile" class="nav-link">Profil</a>
         </li>
 
@@ -57,7 +61,7 @@ import { AuthService } from '../../core/services/auth.service';
   </div>
 </nav>
   `,
-  styles:[`
+  styles: [`
 .navbar{height:70px}
 .logo{color:#2d1e17;font-size:1.4rem}
 .nav-link{font-weight:500;color:#2d1e17}
@@ -82,11 +86,11 @@ import { AuthService } from '../../core/services/auth.service';
 }
   `]
 })
-export class HeaderComponent{
+export class HeaderComponent {
   auth = inject(AuthService);
 
-  logout(){
+  logout() {
     this.auth.logout();
-    location.href="/";
+    location.href = "/";
   }
 }

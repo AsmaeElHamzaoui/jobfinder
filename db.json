@@ -21,6 +21,61 @@
       "password": "Pa$$w0rd!"
     }
   ],
-  "favoriteOffers": [],
-  "applications": []
+  "favoritesOffers": [
+    {
+      "id": "5b8e",
+      "userId": "1e28",
+      "offerId": "21211817",
+      "title": "Physician - Cardiothoracic Surgeon",
+      "company": "Christus Health",
+      "location": "Texarkana, AR"
+    },
+    {
+      "id": "8c19",
+      "userId": "1e28",
+      "offerId": "21166594",
+      "title": "Senior Marketing Applied Scientist",
+      "company": "Uber",
+      "location": "San Francisco, CA"
+    },
+    {
+      "id": "a52b",
+      "userId": "1e28",
+      "offerId": "21267097",
+      "title": "Nurse Practitioner or Physician Assistant - HouseCalls - Statewide Traveler - MN",
+      "company": "Optum",
+      "location": "Central Valley, NY"
+    },
+    {
+      "id": "53c4",
+      "userId": "1e28",
+      "offerId": "20701077",
+      "title": "Financial Center Manager - Asheville - Evergreen",
+      "company": "Bank of America",
+      "location": "Asheville, NC"
+    },
+    {
+      "id": "fc6d",
+      "userId": "1e28",
+      "offerId": "21157352",
+      "title": "Assistant Site Manager",
+      "company": "DoorDash",
+      "location": "Wyoming, MI"
+    }
+  ],
+  "applications": [
+    {
+      "id": "76f3",
+      "userId": "1e28",
+      "offerId": "21157352",
+      "apiSource": "adzuna",
+      "title": "Assistant Site Manager",
+      "company": "DoorDash",
+      "location": "Wyoming, MI",
+      "url": "https://www.themuse.com/jobs/doordash/assistant-site-manager-206c82",
+      "status": "accepte",
+      "notes": "jhjjhjhjhj",
+      "dateAdded": "2026-02-13T11:12:19.514Z"
+    }
+  ]
 }

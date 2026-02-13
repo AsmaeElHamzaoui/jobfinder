@@ -26,22 +26,22 @@ export const routes: Routes = [
   },
 
   //  Favoris (protégé + lazy loading)
-//   {
-//     path: 'favorites',
-//     canActivate: [AuthGuard],
-//     loadChildren: () =>
-//       import('./features/favorites/favorites.routes')
-//         .then(m => m.favoritesRoutes)
-//   },
+  {
+    path: 'favorites',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./features/favorites/favorites.routes')
+        .then(m => m.favoritesRoutes)
+  },
 
   //  Candidatures (protégé + lazy loading)
-//   {
-//     path: 'applications',
-//     canActivate: [AuthGuard],
-//     loadChildren: () =>
-//       import('./features/applications/applications.routes')
-//         .then(m => m.applicationsRoutes)
-//   },
+  {
+    path: 'applications',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./features/applications/applications.routes')
+        .then(m => m.applicationsRoutes)
+  },
 
   //  Profil utilisateur (protégé)
 //   {

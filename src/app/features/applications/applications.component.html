@@ -1,0 +1,239 @@
+<app-header></app-header>
+
+<div class="container py-5">
+
+  <!-- TITRE -->
+  <h1 class="fw-bold mb-4 text-center text-primary">
+    📋 Mes Candidatures
+  </h1>
+
+  <!-- STATISTIQUES -->
+  <div class="row mb-4 g-3">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h3 class="text-primary mb-0">{{ getCountByStatus('all') }}</h3>
+          <small class="text-muted">Total</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h3 class="text-warning mb-0">{{ getCountByStatus('en_attente') }}</h3>
+          <small class="text-muted">En attente</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h3 class="text-success mb-0">{{ getCountByStatus('accepte') }}</h3>
+          <small class="text-muted">Acceptées</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h3 class="text-danger mb-0">{{ getCountByStatus('refuse') }}</h3>
+          <small class="text-muted">Refusées</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Filtre par statut -->
+        <div class="col-md-4">
+          <label class="form-label fw-bold small">Filtrer par statut</label>
+          <select class="form-select" [(ngModel)]="selectedStatus" (change)="onStatusFilterChange()">
+            <option value="all">🔍 Tous les statuts</option>
+            <option value="en_attente">⏳ En attente</option>
+            <option value="accepte">✅ Accepté</option>
+            <option value="refuse">❌ Refusé</option>
+          </select>
+        </div>
+
+        <!-- Recherche -->
+        <div class="col-md-8">
+          <label class="form-label fw-bold small">Rechercher</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Rechercher par titre, entreprise ou localisation..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARGEMENT -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-3 text-muted fw-bold">🔄 Chargement de vos candidatures...</p>
+  </div>
+
+  <!-- AUCUNE CANDIDATURE -->
+  <div *ngIf="!loading && filteredApplications.length === 0" class="text-center my-5">
+    <div class="alert alert-info shadow-sm">
+      <i class="bi bi-inbox fs-3"></i>
+      <p class="mt-2 mb-0" *ngIf="applications.length === 0">
+        Vous n'avez pas encore de candidatures suivies
+      </p>
+      <p class="mt-2 mb-0" *ngIf="applications.length > 0">
+        Aucune candidature ne correspond à vos critères de recherche
+      </p>
+      <small class="text-muted">Ajoutez des offres depuis la page de recherche</small>
+    </div>
+  </div>
+
+  <!-- LISTE DES CANDIDATURES -->
+  <div *ngIf="!loading && filteredApplications.length > 0">
+    <div class="mb-3 text-muted">
+      <strong>{{ filteredApplications.length }}</strong> candidature(s) affichée(s)
+    </div>
+
+    <div class="card application-card mb-3 shadow-sm" *ngFor="let app of filteredApplications">
+      <div class="card-body">
+        
+        <!-- En-tête avec statut -->
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div class="flex-grow-1">
+            <h5 class="card-title fw-bold text-primary mb-2">
+              {{ app.title }}
+            </h5>
+            <div class="mb-2">
+              <span class="badge bg-light text-dark border me-2">
+                🏢 {{ app.company }}
+              </span>
+              <span class="text-muted">
+                📍 {{ app.location }}
+              </span>
+            </div>
+          </div>
+          
+          <!-- Badge statut -->
+          <span class="badge {{ getStatusBadgeClass(app.status) }} fs-6">
+            {{ getStatusLabel(app.status) }}
+          </span>
+        </div>
+
+        <!-- Date d'ajout -->
+        <p class="small text-muted mb-3">
+          <strong>📅 Ajoutée le:</strong>
+          {{ app.dateAdded | date:'dd/MM/yyyy à HH:mm' }}
+        </p>
+
+        <!-- Sélecteur de statut -->
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Modifier le statut:</label>
+          <div class="btn-group w-100" role="group">
+            <button 
+              type="button" 
+              class="btn btn-sm"
+              [class.btn-warning]="app.status === 'en_attente'"
+              [class.btn-outline-warning]="app.status !== 'en_attente'"
+              (click)="updateStatus(app, 'en_attente')"
+            >
+              ⏳ En attente
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-sm"
+              [class.btn-success]="app.status === 'accepte'"
+              [class.btn-outline-success]="app.status !== 'accepte'"
+              (click)="updateStatus(app, 'accepte')"
+            >
+              ✅ Accepté
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-sm"
+              [class.btn-danger]="app.status === 'refuse'"
+              [class.btn-outline-danger]="app.status !== 'refuse'"
+              (click)="updateStatus(app, 'refuse')"
+            >
+              ❌ Refusé
+            </button>
+          </div>
+        </div>
+
+        <!-- Notes personnelles -->
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Notes personnelles:</label>
+          
+          <!-- Mode lecture -->
+          <div *ngIf="!editingNotes[app.id!]" class="notes-display">
+            <p class="text-muted mb-2" *ngIf="!app.notes || app.notes.trim() === ''">
+              <em>Aucune note ajoutée</em>
+            </p>
+            <p class="mb-2" *ngIf="app.notes && app.notes.trim() !== ''">
+              {{ app.notes }}
+            </p>
+            <button 
+              class="btn btn-outline-secondary btn-sm"
+              (click)="startEditingNotes(app)"
+            >
+              ✏️ {{ app.notes ? 'Modifier' : 'Ajouter' }} les notes
+            </button>
+          </div>
+
+          <!-- Mode édition -->
+          <div *ngIf="editingNotes[app.id!]">
+            <textarea 
+              class="form-control mb-2" 
+              rows="3"
+              [(ngModel)]="tempNotes[app.id!]"
+              placeholder="Ajoutez vos notes ici (rappels, dates de relance, etc.)"
+            ></textarea>
+            <div class="d-flex gap-2">
+              <button 
+                class="btn btn-success btn-sm"
+                (click)="saveNotes(app)"
+              >
+                💾 Sauvegarder
+              </button>
+              <button 
+                class="btn btn-secondary btn-sm"
+                (click)="cancelEditingNotes(app)"
+              >
+                ❌ Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top">
+          <a 
+            [href]="app.url" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="btn btn-outline-primary btn-sm"
+          >
+            🔗 Voir l'offre
+          </a>
+          
+          <button 
+            class="btn btn-outline-danger btn-sm ms-auto"
+            (click)="deleteApplication(app)"
+          >
+            🗑️ Supprimer
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>
