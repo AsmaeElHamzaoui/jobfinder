@@ -35,13 +35,13 @@ export const routes: Routes = [
   },
 
   //  Candidatures (protégé + lazy loading)
-//   {
-//     path: 'applications',
-//     canActivate: [AuthGuard],
-//     loadChildren: () =>
-//       import('./features/applications/applications.routes')
-//         .then(m => m.applicationsRoutes)
-//   },
+  {
+    path: 'applications',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./features/applications/applications.routes')
+        .then(m => m.applicationsRoutes)
+  },
 
   //  Profil utilisateur (protégé)
 //   {

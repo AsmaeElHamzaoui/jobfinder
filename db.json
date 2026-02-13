@@ -63,5 +63,19 @@
       "location": "Wyoming, MI"
     }
   ],
-  "applications": []
+  "applications": [
+    {
+      "id": "76f3",
+      "userId": "1e28",
+      "offerId": "21157352",
+      "apiSource": "adzuna",
+      "title": "Assistant Site Manager",
+      "company": "DoorDash",
+      "location": "Wyoming, MI",
+      "url": "https://www.themuse.com/jobs/doordash/assistant-site-manager-206c82",
+      "status": "accepte",
+      "notes": "jhjjhjhjhj",
+      "dateAdded": "2026-02-13T11:12:19.514Z"
+    }
+  ]
 }
