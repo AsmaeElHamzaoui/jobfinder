@@ -44,13 +44,13 @@ export const routes: Routes = [
   },
 
   //  Profil utilisateur (protégé)
-//   {
-//     path: 'profile',
-//     canActivate: [AuthGuard],
-//     loadChildren: () =>
-//       import('./features/profile/profile.routes')
-//         .then(m => m.profileRoutes)
-//   },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./features/profile/profile.routes')
+        .then(m => m.profileRoutes)
+  },
 
   //  Page 404
   {
