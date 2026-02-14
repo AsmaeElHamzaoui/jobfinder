@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HeaderComponent } from '../../../shared/components/header';
+import { FooterComponent } from '../../../shared/components/footer';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../../shared/models/user.model';
@@ -8,7 +10,7 @@ import { User } from '../../../shared/models/user.model';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,HeaderComponent,FooterComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
