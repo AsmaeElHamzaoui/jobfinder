@@ -4,10 +4,12 @@ import * as FavSelectors from "./store/favorites.selectors";
 import * as FavActions from "./store/favorites.actions";
 import { AsyncPipe, NgFor } from "@angular/common";
 import { AuthService } from "../../core/services/auth.service";
+import { HeaderComponent } from '../../shared/components/header';
+import { FooterComponent } from '../../shared/components/footer';
 
 @Component({
   standalone:true,
-  imports:[NgFor,AsyncPipe],
+  imports:[NgFor,AsyncPipe,HeaderComponent, FooterComponent],
   templateUrl:"./favorites.component.html"
 })
 export class FavoritesComponent implements OnInit{
