@@ -1,59 +1,68 @@
 # Jobfinder
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+### Description du projet
+Jobfinder JobFinder est une application de recherche d'emplois qui permet aux chercheurs d'emploi de consulter des offres d'emploi provenant de plusieurs sources internationales via une ou plusieurs APIs publiques.
 
-## Development server
+### Fonctionnalités principales
 
-To start a local development server, run:
+1. Inscription et Connexion
 
-```bash
-ng serve
+ - Les chercheurs d’emploi peuvent créer un compte en renseignant les informations suivantes :
+Nom
+Prénom
+Email
+Mot de passe
+ - Chaque utilisateur peut :
+Modifier ses informations personnelles (nom, prénom, email, mot de passe)
+Supprimer son compte si nécessaire
+
+ 2. Recherche d'Emplois 
+  
+  Le chercheur d'emploi (même s'il n'est pas authentifié) peut effectuer une recherche d'offres d'emploi avec les critères suivants :
+
+Filtres de recherche obligatoires :
+Mots clés (titre du poste) : champ texte (input) dans une barre de recherche
+Localisation (ville, pays, région) : liste déroulante (select) ou champ texte (input) pour saisir la localisation souhaitée
+
+3. Gestion des Favoris
+
+ - Ajouter une offre à ses favoris depuis la liste des offres via le bouton "favoris" (visible uniquement pour les utilisateurs authentifiés)
+ - Consulter ses offres favorites dans une page dédiée.
+ - Supprimer une offre de ses favoris.
+
+
+4. Suivi des Candidatures
+
+ - Ajouter une offre au suivi des candidatures à partir de la liste des offres via le bouton "Suivre cette candidature" (visible uniquement pour les utilisateurs authentifiés)
+ - Consulter la liste de toutes les candidatures suivies.
+ - Ajouter des notes personnelles pour chaque candidature (optionnel).
+ - Supprimer une candidature de sa liste de suivi.
+
+
+### Technologies utilisées
+
+- Angular version 17 ou plus (module ou standalone au choix)
+-  Gestion d'état NgRx : pour gérer au minimum la partie favoris
+-  RxJS/Observables
+- Injection de dépendance
+- Formulaire via Reactive Forms ou Template Driven Forms
+- Bootstrap 
+- Guards, resolvers
+- Databinding
+- Service, Pipes, Parent/Child components, Routing
+ 
+
+### Installation et Configuration
+
+Étape 1 : Cloner le repository
+
+```
+   git clone https://github.com/AsmaeElHamzaoui/jobfinder
+   cd jobfinder
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+Étape 2 : runer l'aaplication
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+   npm install
+   npm start
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
