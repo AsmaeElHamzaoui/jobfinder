@@ -1,15 +1,24 @@
-/* src/app/features/profile/profile.component.css */
-
+/* ==================== Profil Card ==================== */
 .profile-card {
-  border: none;
-  border-radius: 15px;
+  border-radius: 16px;
+  background: #fff5e6; /* beige */
+  border: 2px solid #ff8c42; /* orange */
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.15);
+  transition: all 0.3s ease;
   overflow: hidden;
 }
 
+.profile-card:hover {
+  transform: translateY(-6px);
+  border-color: #6B4226; /* marron */
+  box-shadow: 0 12px 35px rgba(255, 140, 66, 0.3);
+}
+
+/* ==================== Avatar ==================== */
 .profile-avatar {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #ff8c42, #ff6b35);
+  background: linear-gradient(135deg, #ff8c42, #6B4226); /* orange → marron */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -17,13 +26,21 @@
   font-size: 2rem;
   font-weight: bold;
   color: white;
-  border: 4px solid white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 4px solid #fff5e6; /* beige */
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+  margin: 0 auto 10px auto;
+}
+
+/* ==================== Titres et textes ==================== */
+h1 {
+  color: #6B4226; /* marron */
+  margin-top: 3rem;
+  text-align: center;
 }
 
 .profile-info .info-row {
   padding: 1rem 0;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid #ffe4cc; /* beige clair */
 }
 
 .profile-info .info-row:last-child {
@@ -34,14 +51,83 @@
   font-size: 0.875rem;
   display: block;
   margin-bottom: 0.25rem;
+  color: #6B4226; /* marron */
+  font-weight: 600;
 }
 
 .profile-info p {
-  font-size: 1.1rem;
-  color: #2d1e17;
+  font-size: 1rem;
+  color: #6B4226; /* marron */
+  line-height: 1.5;
+  margin-bottom: 0;
 }
 
-/* Animations */
+/* ==================== Badges ==================== */
+.badge {
+  font-weight: 500;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 12px;
+  background-color: #ff8c42; /* orange */
+  color: white;
+}
+
+/* ==================== Boutons ==================== */
+.btn {
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background: #6B4226; /* marron */
+  border: none;
+  color: white;
+}
+.btn-primary:hover {
+  background: #563b28; /* marron foncé */
+}
+
+.btn-warning {
+  background: #ff8c42; /* orange */
+  border: none;
+  color: #fff5e6; /* beige clair */
+}
+.btn-warning:hover {
+  background: #e6762f; /* orange foncé */
+}
+
+.btn-success {
+  background: #6B4226; /* marron */
+  border: none;
+  color: white;
+}
+.btn-success:hover {
+  background: #563b28;
+}
+
+.btn-danger {
+  background: #c85c3f; /* rouge/orange foncé */
+  border: none;
+  color: white;
+}
+.btn-danger:hover {
+  background: #a74527;
+}
+
+/* ==================== Formulaires ==================== */
+.form-control:focus {
+  border-color: #ff8c42; /* orange */
+  box-shadow: 0 0 0 0.25rem rgba(255, 140, 66, 0.25);
+}
+
+/* ==================== Animations ==================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -57,61 +143,14 @@
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Boutons */
-.btn {
-  font-weight: 600;
-  padding: 0.625rem 1.25rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.btn-primary {
-  background: #0d6efd;
-  border: none;
-}
-
-.btn-primary:hover {
-  background: #0b5ed7;
-}
-
-.btn-warning {
-  background: #ffc107;
-  border: none;
-  color: #2d1e17;
-}
-
-.btn-warning:hover {
-  background: #ffb300;
-}
-
-.btn-danger {
-  background: #dc3545;
-  border: none;
-}
-
-.btn-danger:hover {
-  background: #c82333;
-}
-
-/* Formulaires */
-.form-control:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
-}
-
-/* Responsive */
+/* ==================== Responsive ==================== */
 @media (max-width: 768px) {
   .profile-avatar {
     width: 60px;
     height: 60px;
     font-size: 1.5rem;
   }
-  
+
   h1 {
     font-size: 1.75rem;
   }

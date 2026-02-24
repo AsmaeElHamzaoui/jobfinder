@@ -119,3 +119,24 @@ small{
 .redirect a:hover{
   text-decoration:underline;
 }
+
+.auth-wrapper{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top: 40px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:18px;
+}
+
+/* éléments pleine largeur */
+.form-grid .error,
+.form-grid button,
+.form-grid .redirect{
+  grid-column: 1 / -1;
+}

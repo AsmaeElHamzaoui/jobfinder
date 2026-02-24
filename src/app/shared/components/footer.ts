@@ -42,10 +42,6 @@ import { RouterModule } from '@angular/router';
 
   </div>
 
-  <div class="copyright text-center py-3">
-    © 2026 JobFinder — Tous droits réservés
-  </div>
-
 </footer>
   `,
   styles:[`

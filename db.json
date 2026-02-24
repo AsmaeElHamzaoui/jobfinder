@@ -61,6 +61,22 @@
       "title": "Assistant Site Manager",
       "company": "DoorDash",
       "location": "Wyoming, MI"
+    },
+    {
+      "id": "fd18",
+      "userId": "698b",
+      "offerId": "21324316",
+      "title": "Float Pharmacist",
+      "company": "Optum",
+      "location": "San Francisco, CA"
+    },
+    {
+      "id": "f4db",
+      "userId": "698b",
+      "offerId": "21322371",
+      "title": "Customer Service Representative",
+      "company": "Chevron",
+      "location": "San Francisco, CA"
     }
   ],
   "applications": [
@@ -76,6 +92,19 @@
       "status": "accepte",
       "notes": "jhjjhjhjhj",
       "dateAdded": "2026-02-13T11:12:19.514Z"
+    },
+    {
+      "id": "af72",
+      "userId": "698b",
+      "offerId": "21324316",
+      "apiSource": "adzuna",
+      "title": "Float Pharmacist",
+      "company": "Optum",
+      "location": "San Francisco, CA",
+      "url": "https://www.themuse.com/jobs/optum/float-pharmacist-932afe",
+      "status": "accepte",
+      "notes": "h,,gjghjg",
+      "dateAdded": "2026-02-24T06:58:28.522Z"
     }
   ]
 }

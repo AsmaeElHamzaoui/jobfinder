@@ -46,7 +46,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   private favSubscription: Subscription | null = null;
 
   ngOnInit(): void {
-    console.log('🔵 JobsComponent - Initialisation');
+    console.log('JobsComponent - Initialisation');
 
     const userId = this.getUserId();
     if (userId) {
@@ -122,13 +122,13 @@ export class JobsComponent implements OnInit, OnDestroy {
       }
     }));
 
-    console.log(`⭐ Offre "${job.name}" ajoutée aux favoris`);
+    console.log(`Offre "${job.name}" ajoutée aux favoris`);
   }
 
  trackApplication(job: Job): void {
   const userId = this.getUserId();
   if (!userId) {
-    console.warn('⚠️ Utilisateur non connecté');
+    console.warn(' Utilisateur non connecté');
     return;
   }
 
@@ -158,23 +158,23 @@ export class JobsComponent implements OnInit, OnDestroy {
         this.jobsService.getApplicationsService().addApplication(application)
           .subscribe({
             next: () => {
-              console.log('✅ Candidature ajoutée au suivi');
+              console.log(' Candidature ajoutée au suivi');
               alert('Candidature ajoutée à votre suivi !');
             },
             error: (err) => {
-              console.error('❌ Erreur ajout candidature:', err);
+              console.error(' Erreur ajout candidature:', err);
               alert('Erreur lors de l\'ajout de la candidature');
             }
           });
       },
       error: (err) => {
-        console.error('❌ Erreur vérification:', err);
+        console.error(' Erreur vérification:', err);
       }
     });
 }
 
   loadJobs(): void {
-    console.log('🔍 Chargement des jobs - Page:', this.page);
+    console.log(' Chargement des jobs - Page:', this.page);
     this.loading = true;
 
     this.jobsService.getJobs({
@@ -195,7 +195,7 @@ export class JobsComponent implements OnInit, OnDestroy {
         this.loading = false;
       },
       error: (err) => {
-        console.error('❌ Erreur lors du chargement:', err);
+        console.error(' Erreur lors du chargement:', err);
         this.jobs = [];
         this.filteredJobs = [];
         this.displayedJobs = [];

@@ -10,9 +10,9 @@ import { AuthService } from '../../core/services/auth.service';
   template: `
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top px-3">
 
-  <a class="navbar-brand fw-bold logo" routerLink="/">
-    JobFinder
-  </a>
+  <a class="navbar-brand fw-bold logo text-brown" routerLink="/">
+  JobFinder
+</a>
 
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
     <span class="navbar-toggler-icon"></span>
@@ -83,6 +83,10 @@ import { AuthService } from '../../core/services/auth.service';
 .btn-logout:hover{
   background:#ff8c42;
   color:white;
+}
+
+.text-brown {
+  color: #6B4226; /* marron élégant */
 }
   `]
 })

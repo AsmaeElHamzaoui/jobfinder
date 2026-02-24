@@ -10,7 +10,8 @@ import { FooterComponent } from '../../shared/components/footer';
 @Component({
   standalone:true,
   imports:[NgFor,AsyncPipe,HeaderComponent, FooterComponent],
-  templateUrl:"./favorites.component.html"
+  templateUrl:"./favorites.component.html",
+  styleUrls: ['./jobs.component.css']
 })
 export class FavoritesComponent implements OnInit{
 

@@ -1,8 +1,10 @@
 <app-header></app-header>
+
+<div class="auth-wrapper">
 <div class="auth-container">
   <h2>Inscription</h2>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <form class="form-grid" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
     <div class="form-group">
       <label>Prénom</label>
@@ -38,16 +40,16 @@
 
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-    <button type="submit" [disabled]="loading">
+    <button type="submit" class="btn-auth" [disabled]="loading">
       {{ loading ? 'Création...' : 'Créer un compte' }}
     </button>
 
-    <p class="redirect">
+    <p class="redirect" >
       Déjà un compte ?
       <a routerLink="/login">Se connecter</a>
     </p>
 
   </form>
 </div>
-
+</div>
 <app-footer></app-footer>

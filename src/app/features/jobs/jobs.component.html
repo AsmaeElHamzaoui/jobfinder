@@ -1,9 +1,8 @@
 <app-header></app-header>
-<div class="container py-5 ">
+<div class="container py-5">
 
   <!-- TITLE -->
-  <h1 class="fw-bold mb-4 text-center text-primary">
-    🔍 Trouver votre emploi idéal
+  <h1 class="my-12 fw-bold mb-4 text-center text-primary">
   </h1>
 
   <!-- SEARCH BAR -->
@@ -11,14 +10,14 @@
     <div class="row g-3">
       <!-- Mot-clé (obligatoire) -->
       <div class="col-md-5">
-        <label class="form-label fw-bold small">Mots-clés (titre du poste) *</label>
+        <label class="form-label fw-bold small">Mots-clés (titre du poste)</label>
         <input type="text" class="form-control" placeholder="Ex: Développeur, Manager, Designer..."
           [(ngModel)]="keyword" (keyup.enter)="search()" required />
       </div>
 
       <!-- Localisation (obligatoire) -->
       <div class="col-md-5">
-        <label class="form-label fw-bold small">Localisation (ville, pays) *</label>
+        <label class="form-label fw-bold small">Localisation (ville, pays)</label>
         <input type="text" class="form-control" placeholder="Ex: Paris, London, Remote..." [(ngModel)]="location"
           (keyup.enter)="search()" required />
       </div>
@@ -26,7 +25,7 @@
       <!-- Bouton recherche -->
       <div class="col-md-2 d-grid align-self-end">
         <button class="btn btn-warning fw-bold py-2" (click)="search()" [disabled]="loading">
-          <span *ngIf="!loading">🔍 Rechercher</span>
+          <span *ngIf="!loading"> Rechercher</span>
           <span *ngIf="loading">
             <span class="spinner-border spinner-border-sm me-1"></span>
             Recherche...
@@ -63,135 +62,141 @@
     </div>
 
     <!-- LISTE DES OFFRES (max 10) -->
-    <div class="card job-card mb-3 shadow-sm" *ngFor="let job of displayedJobs; let i = index">
-      <div class="card-body">
+    <div class="row g-4">
 
-        <!-- Numéro de l'offre -->
-        <div class="job-number">Offre #{{ (page - 1) * pageSize + i + 1 }}</div>
+      <div class="col-lg-4 col-md-6" *ngFor="let job of displayedJobs; let i = index">
 
-        <!-- TITRE DU POSTE (exigence 1) -->
-        <h5 class="card-title fw-bold text-primary mb-3">
-          {{ job.name }}
-        </h5>
+        <div class="card job-card h-100 shadow-sm">
+          <div class="card-body">
 
-        <!-- NOM DE L'ENTREPRISE (exigence 2) -->
-        <div class="mb-2">
-          <span class="badge bg-light text-dark border">
-            🏢 {{ job.company?.name || 'Entreprise non spécifiée' }}
-          </span>
+            <!-- Numéro de l'offre -->
+            <!-- <div class="job-number">{{ (page - 1) * pageSize + i + 1 }}</div> -->
+
+            <!-- TITRE DU POSTE (exigence 1) -->
+            <h5 class="card-title fw-bold mb-3" style="color:#6B4226">
+              {{ job.name }}
+            </h5>
+
+            <!-- NOM DE L'ENTREPRISE (exigence 2) -->
+            <div class="mb-2">
+              <span class="badge bg-light text-dark border">
+                🏢 {{ job.company?.name || 'Entreprise non spécifiée' }}
+              </span>
+            </div>
+
+            <!-- LOCALISATION (exigence 3) -->
+            <div class="mb-2">
+              <span class="text-muted">
+                <strong>📍 Localisation:</strong>
+                {{ job.locations?.[0]?.name || 'Non spécifié' }}
+              </span>
+            </div>
+
+            <!-- DATE DE PUBLICATION (exigence 4) -->
+            <p class="small text-muted mb-2">
+              <strong>📅 Publié le:</strong>
+              {{ job.publication_date | date:'dd/MM/yyyy à HH:mm' }}
+            </p>
+
+            <!-- NIVEAU D'EXPÉRIENCE (optionnel) -->
+            <div class="mb-2" *ngIf="job.levels && job.levels.length > 0">
+              <span class="badge bg-info text-dark">
+                👤 {{ job.levels[0].name }}
+              </span>
+            </div>
+
+            <!-- CATÉGORIE (optionnel) -->
+            <div class="mb-3" *ngIf="job.categories && job.categories.length > 0">
+              <span class="badge bg-secondary">
+                🏷️ {{ job.categories[0].name }}
+              </span>
+            </div>
+
+            <!-- DESCRIPTION COURTE (exigence 5) -->
+            <p class="card-text description mb-3">
+              <span [innerHTML]="job.contents | slice:0:200"></span>{{ job.contents.length > 200 ? '...' : '' }}
+            </p>
+
+            <!-- NOTE: Salaire non disponible dans cette API -->
+
+            <!-- BOUTONS D'ACTION -->
+            <div class="d-flex flex-wrap gap-2 mt-3">
+
+              <!-- LIEN VERS OFFRE COMPLÈTE (exigence 6) -->
+              <a [href]="job.refs?.landing_page" target="_blank" rel="noopener noreferrer"
+                class="btn btn-outline-warning btn-sm">
+                🔗 Voir l'offre complète
+              </a>
+
+              <!-- BOUTON FAVORIS (visible uniquement si authentifié) -->
+              <button *ngIf="isLogged()" class="btn btn-sm"
+                [ngClass]="isFavorited(job) ? 'btn-secondary disabled' : 'btn-warning'" (click)="addToFavorites(job)"
+                [disabled]="isFavorited(job)" title="Ajouter cette offre à vos favoris">
+                <span *ngIf="!isFavorited(job)">⭐ Ajouter aux favoris</span>
+                <span *ngIf="isFavorited(job)">✅ Déjà en favoris</span>
+              </button>
+
+
+              <!-- BOUTON SUIVRE CANDIDATURE (visible uniquement si authentifié - exigence 8) -->
+              <button *ngIf="isLogged()" class="btn btn-success btn-sm" (click)="trackApplication(job)"
+                title="Suivre votre candidature pour cette offre">
+                📋 Suivre cette candidature
+              </button>
+            </div>
+          </div>
         </div>
 
-        <!-- LOCALISATION (exigence 3) -->
-        <div class="mb-2">
-          <span class="text-muted">
-            <strong>📍 Localisation:</strong>
-            {{ job.locations?.[0]?.name || 'Non spécifié' }}
-          </span>
-        </div>
-
-        <!-- DATE DE PUBLICATION (exigence 4) -->
-        <p class="small text-muted mb-2">
-          <strong>📅 Publié le:</strong>
-          {{ job.publication_date | date:'dd/MM/yyyy à HH:mm' }}
-        </p>
-
-        <!-- NIVEAU D'EXPÉRIENCE (optionnel) -->
-        <div class="mb-2" *ngIf="job.levels && job.levels.length > 0">
-          <span class="badge bg-info text-dark">
-            👤 {{ job.levels[0].name }}
-          </span>
-        </div>
-
-        <!-- CATÉGORIE (optionnel) -->
-        <div class="mb-3" *ngIf="job.categories && job.categories.length > 0">
-          <span class="badge bg-secondary">
-            🏷️ {{ job.categories[0].name }}
-          </span>
-        </div>
-
-        <!-- DESCRIPTION COURTE (exigence 5) -->
-        <p class="card-text description mb-3">
-          {{ job.contents | slice:0:200 }}{{ job.contents.length > 200 ? '...' : '' }}
-        </p>
-
-        <!-- NOTE: Salaire non disponible dans cette API -->
-
-        <!-- BOUTONS D'ACTION -->
-        <div class="d-flex flex-wrap gap-2 mt-3">
-
-          <!-- LIEN VERS OFFRE COMPLÈTE (exigence 6) -->
-          <a [href]="job.refs?.landing_page" target="_blank" rel="noopener noreferrer"
-            class="btn btn-outline-warning btn-sm">
-            🔗 Voir l'offre complète
-          </a>
-
-          <!-- BOUTON FAVORIS (visible uniquement si authentifié) -->
-          <button *ngIf="isLogged()" class="btn btn-sm"
-            [ngClass]="isFavorited(job) ? 'btn-secondary disabled' : 'btn-warning'" (click)="addToFavorites(job)"
-            [disabled]="isFavorited(job)" title="Ajouter cette offre à vos favoris">
-            <span *ngIf="!isFavorited(job)">⭐ Ajouter aux favoris</span>
-            <span *ngIf="isFavorited(job)">✅ Déjà en favoris</span>
-          </button>
-
-
-          <!-- BOUTON SUIVRE CANDIDATURE (visible uniquement si authentifié - exigence 8) -->
-          <button *ngIf="isLogged()" class="btn btn-success btn-sm" (click)="trackApplication(job)"
-            title="Suivre votre candidature pour cette offre">
-            📋 Suivre cette candidature
-          </button>
-        </div>
       </div>
+
+      <!-- PAGINATION AMÉLIORÉE -->
+      <nav aria-label="Jobs pagination" *ngIf="totalPages > 1" class="mt-5">
+        <ul class="pagination justify-content-center flex-wrap">
+
+          <!-- Bouton Précédent -->
+          <li class="page-item" [class.disabled]="page === 1">
+            <button class="page-link" (click)="prevPage()" [disabled]="page === 1" aria-label="Page précédente">
+              ← Précédent
+            </button>
+          </li>
+
+          <!-- Première page -->
+          <li class="page-item" *ngIf="getPageNumbers()[0] > 1">
+            <button class="page-link" (click)="goToPage(1)">1</button>
+          </li>
+          <li class="page-item disabled" *ngIf="getPageNumbers()[0] > 2">
+            <span class="page-link">...</span>
+          </li>
+
+          <!-- Numéros de pages -->
+          <li class="page-item" *ngFor="let pageNum of getPageNumbers()" [class.active]="pageNum === page">
+            <button class="page-link" (click)="goToPage(pageNum)" [class.fw-bold]="pageNum === page">
+              {{ pageNum }}
+            </button>
+          </li>
+
+          <!-- Dernière page -->
+          <li class="page-item disabled" *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1">
+            <span class="page-link">...</span>
+          </li>
+          <li class="page-item" *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages">
+            <button class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</button>
+          </li>
+
+          <!-- Bouton Suivant -->
+          <li class="page-item" [class.disabled]="page === totalPages">
+            <button class="page-link" (click)="nextPage()" [disabled]="page === totalPages" aria-label="Page suivante">
+              Suivant →
+            </button>
+          </li>
+        </ul>
+
+        <!-- Info page actuelle -->
+        <div class="text-center mt-2 small text-muted">
+          Page <strong>{{ page }}</strong> sur <strong>{{ totalPages }}</strong>
+        </div>
+      </nav>
     </div>
 
-    <!-- PAGINATION AMÉLIORÉE -->
-    <nav aria-label="Jobs pagination" *ngIf="totalPages > 1" class="mt-5">
-      <ul class="pagination justify-content-center flex-wrap">
-
-        <!-- Bouton Précédent -->
-        <li class="page-item" [class.disabled]="page === 1">
-          <button class="page-link" (click)="prevPage()" [disabled]="page === 1" aria-label="Page précédente">
-            ← Précédent
-          </button>
-        </li>
-
-        <!-- Première page -->
-        <li class="page-item" *ngIf="getPageNumbers()[0] > 1">
-          <button class="page-link" (click)="goToPage(1)">1</button>
-        </li>
-        <li class="page-item disabled" *ngIf="getPageNumbers()[0] > 2">
-          <span class="page-link">...</span>
-        </li>
-
-        <!-- Numéros de pages -->
-        <li class="page-item" *ngFor="let pageNum of getPageNumbers()" [class.active]="pageNum === page">
-          <button class="page-link" (click)="goToPage(pageNum)" [class.fw-bold]="pageNum === page">
-            {{ pageNum }}
-          </button>
-        </li>
-
-        <!-- Dernière page -->
-        <li class="page-item disabled" *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1">
-          <span class="page-link">...</span>
-        </li>
-        <li class="page-item" *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages">
-          <button class="page-link" (click)="goToPage(totalPages)">{{ totalPages }}</button>
-        </li>
-
-        <!-- Bouton Suivant -->
-        <li class="page-item" [class.disabled]="page === totalPages">
-          <button class="page-link" (click)="nextPage()" [disabled]="page === totalPages" aria-label="Page suivante">
-            Suivant →
-          </button>
-        </li>
-      </ul>
-
-      <!-- Info page actuelle -->
-      <div class="text-center mt-2 small text-muted">
-        Page <strong>{{ page }}</strong> sur <strong>{{ totalPages }}</strong>
-      </div>
-    </nav>
   </div>
 
-</div>
-
-<app-footer></app-footer>
+  <app-footer></app-footer>

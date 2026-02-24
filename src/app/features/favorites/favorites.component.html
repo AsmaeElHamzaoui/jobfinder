@@ -1,15 +1,29 @@
-
 <app-header></app-header>
+<div class="favorites-container">
 
-<h2>Mes favoris ⭐</h2>
+  <h2 class="favorites-title"> Mes favoris</h2>
 
-<div *ngFor="let f of favorites$ | async" class="card mb-2 p-3">
-  <h5>{{f.title}}</h5>
-  <small>{{f.company}} — {{f.location}}</small>
+  <div class="favorites-grid">
 
-  <button class="btn btn-danger btn-sm mt-2"
-          (click)="remove(f.id!)">
-    Supprimer
-  </button>
+    <div class="favorite-card" *ngFor="let f of favorites$ | async">
+
+      <div class="favorite-title">{{f.title}}</div>
+
+      <div class="favorite-company">
+        🏢 {{f.company}}
+      </div>
+
+      <span class="favorite-location">
+        📍 {{f.location}}
+      </span>
+
+      <button class="favorite-btn" (click)="remove(f.id!)">
+        Supprimer
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 <app-footer></app-footer>
