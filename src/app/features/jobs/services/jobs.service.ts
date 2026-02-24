@@ -18,7 +18,7 @@ export class JobsService {
    * Récupère les offres d'emploi depuis l'API
    */
   getJobs(searchParams: JobSearchParams): Observable<JobsApiResponse> {
-    console.log('🟡 JobsService - getJobs appelé avec:', searchParams);
+    console.log(' JobsService - getJobs appelé avec:', searchParams);
 
     let params = new HttpParams()
       .set('page', searchParams.page.toString())
@@ -40,13 +40,13 @@ export class JobsService {
       params = params.set('category', searchParams.category.trim());
     }
 
-    console.log('🟡 Params HTTP:', params.toString());
+    console.log(' Params HTTP:', params.toString());
 
     return this.http.get<JobsApiResponse>(this.API_URL, { params }).pipe(
       tap(response => {
-        console.log('✅ Réponse API reçue:', response);
-        console.log('✅ Nombre de résultats:', response.results?.length || 0);
-        console.log('✅ Total pages:', response.page_count);
+        console.log(' Réponse API reçue:', response);
+        console.log(' Nombre de résultats:', response.results?.length || 0);
+        console.log(' Total pages:', response.page_count);
       }),
       map(response => ({
         results: response.results ?? [],
@@ -55,9 +55,9 @@ export class JobsService {
         total: response.total
       })),
       catchError(error => {
-        console.error('❌ Erreur API jobs:', error);
-        console.error('❌ Status:', error.status);
-        console.error('❌ Message:', error.message);
+        console.error(' Erreur API jobs:', error);
+        console.error(' Status:', error.status);
+        console.error(' Message:', error.message);
         
         return of({
           results: [],
@@ -82,8 +82,8 @@ export class JobsService {
       job.name?.toLowerCase().includes(lowerKeyword)
     );
 
-    console.log(`✅ Filtrage par titre uniquement - Keyword: "${keyword}"`);
-    console.log(`✅ Jobs trouvés: ${filtered.length} / ${jobs.length}`);
+    console.log(` Filtrage par titre uniquement - Keyword: "${keyword}"`);
+    console.log(` Jobs trouvés: ${filtered.length} / ${jobs.length}`);
     return filtered;
   }
 
@@ -98,7 +98,7 @@ export class JobsService {
       return dateB - dateA; // Du plus récent au plus ancien
     });
 
-    console.log('✅ Jobs triés par date (plus récent → plus ancien)');
+    console.log(' Jobs triés par date (plus récent → plus ancien)');
     return sorted;
   }
 
