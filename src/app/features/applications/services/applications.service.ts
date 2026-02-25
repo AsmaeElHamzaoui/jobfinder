@@ -17,6 +17,8 @@ export class ApplicationsService {
     return this.http.post<Application>(this.api, app);
   }
 
+  
+
   updateApplication(id: string, data: Partial<Application>) {
     return this.http.patch(`${this.api}/${id}`, data);
   }

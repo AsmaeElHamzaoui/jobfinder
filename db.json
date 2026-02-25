@@ -8,8 +8,8 @@
     },
     {
       "id": "698b",
-      "firstName": "Qui nobis eum quae i",
-      "lastName": "Nemo dolores fugit ",
+      "firstName": "Asmae",
+      "lastName": "Nemo dolores fugit",
       "email": "hezeroz@mailinator.com",
       "password": "Pa$$w0rd!"
     },
@@ -63,14 +63,6 @@
       "location": "Wyoming, MI"
     },
     {
-      "id": "fd18",
-      "userId": "698b",
-      "offerId": "21324316",
-      "title": "Float Pharmacist",
-      "company": "Optum",
-      "location": "San Francisco, CA"
-    },
-    {
       "id": "f4db",
       "userId": "698b",
       "offerId": "21322371",
@@ -105,6 +97,19 @@
       "status": "accepte",
       "notes": "h,,gjghjg",
       "dateAdded": "2026-02-24T06:58:28.522Z"
+    },
+    {
+      "id": "dfc7",
+      "userId": "698b",
+      "offerId": "21322814",
+      "apiSource": "adzuna",
+      "title": "Hiring Event - Software Engineers",
+      "company": "L3Harris Technologies",
+      "location": "Waco, TX",
+      "url": "https://www.themuse.com/jobs/l3harristechnologies/hiring-event-software-engineers-06be05",
+      "status": "accepte",
+      "notes": "",
+      "dateAdded": "2026-02-24T10:21:00.298Z"
     }
   ]
 }
